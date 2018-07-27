@@ -9,8 +9,6 @@ import (
 	"reflect"
 	"unsafe"
 	"strconv"
-	"math/rand"
-	"time"
 	"github.com/json-iterator/go"
 )
 
@@ -192,30 +190,6 @@ func BMap(m [][]byte, fn func(i int, k []byte) []byte) [][]byte {
 		m[i] = fn(i, d)
 	}
 	return m
-}
-
-// 生成count个[start,end)结束的不重复的随机数
-func GenRandom(start int, end int, count int) map[int]bool {
-	nums := make(map[int]bool)
-
-	// 范围检查
-	if end < start || (end-start) < count {
-		return nums
-	}
-
-	// 随机数生成器，加入时间戳保证每次生成的随机数不一样
-	r := rand.New(rand.NewSource(time.Now().UnixNano()))
-	for len(nums) < count {
-
-		// 生成随机数
-		num := r.Intn(end-start) + start
-		if nums[num] {
-			continue
-		}
-		nums[num] = true
-	}
-
-	return nums
 }
 
 func JsonGet(data []byte, path ...interface{}) jsoniter.Any {

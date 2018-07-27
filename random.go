@@ -208,6 +208,30 @@ func (m myRand) RandPerm(n int) []int {
 	return perm
 }
 
+// 生成count个[start,end)结束的不重复的随机数
+func (m myRand) GenRandom(start int, end int, count int) map[int]bool {
+	nums := make(map[int]bool)
+
+	// 范围检查
+	if end < start || (end-start) < count {
+		return nums
+	}
+
+	// 随机数生成器，加入时间戳保证每次生成的随机数不一样
+	r := mrand.New(mrand.NewSource(time.Now().UnixNano()))
+	for len(nums) < count {
+
+		// 生成随机数
+		num := r.Intn(end-start) + start
+		if nums[num] {
+			continue
+		}
+		nums[num] = true
+	}
+
+	return nums
+}
+
 // NOTE: This relies on the os's random number generator.
 // For real security, we should salt that with some seed.
 // See github.com/tendermint/go-crypto for a more secure reader.
@@ -215,7 +239,7 @@ func cRandBytes(numBytes int) []byte {
 	b := make([]byte, numBytes)
 	_, err := crand.Read(b)
 	if err != nil {
-		MustNotErr(err)
+		Err.MustNotErr(err)
 	}
 	return b
 }
