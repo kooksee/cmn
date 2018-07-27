@@ -9,7 +9,6 @@ import (
 	"reflect"
 	"unsafe"
 	"strconv"
-	"github.com/json-iterator/go"
 )
 
 func F(format string, a ...interface{}) string {
@@ -191,8 +190,6 @@ func BMap(m [][]byte, fn func(i int, k []byte) []byte) [][]byte {
 	}
 	return m
 }
-
-
 
 func P(a ...interface{}) {
 	fmt.Println(a...)
