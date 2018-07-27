@@ -106,3 +106,7 @@ func (murmurHash) Hash(data []byte, seed uint32) uint32 {
 
 	return h
 }
+
+func (m jumpHash) BloomHash(key []byte) uint32 {
+	return Hash.MurmurHash().Hash(key, 0xbc9f1d34)
+}
