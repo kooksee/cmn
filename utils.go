@@ -192,9 +192,7 @@ func BMap(m [][]byte, fn func(i int, k []byte) []byte) [][]byte {
 	return m
 }
 
-func JsonGet(data []byte, path ...interface{}) jsoniter.Any {
-	return json.Get(data, path...)
-}
+
 
 func P(a ...interface{}) {
 	fmt.Println(a...)

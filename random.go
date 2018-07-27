@@ -208,6 +208,14 @@ func (m myRand) RandPerm(n int) []int {
 	return perm
 }
 
+func (m myRand) Rand32(max uint32) uint32 {
+	if max == 0 {
+		return 0
+	}
+	mrand.Seed(time.Now().Unix())
+	return mrand.Uint32() % max
+}
+
 // 生成count个[start,end)结束的不重复的随机数
 func (m myRand) GenRandom(start int, end int, count int) map[int]bool {
 	nums := make(map[int]bool)
