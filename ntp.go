@@ -6,6 +6,16 @@ import (
 	"time"
 )
 
+func CheckClockDrift() error {
+	return (&LocalNtpValidator{
+		NtpFailureThreshold: 32,
+		NtpWarningCooldown:  10 * time.Minute,
+		NtpPool:             "pool.ntp.org",
+		NtpChecks:           3,
+		DriftThreshold:      10 * time.Second,
+	}).checkClockDrift()
+}
+
 type LocalNtpValidator struct {
 	// Number of measurements to do against the NTP server
 	NtpChecks uint64
