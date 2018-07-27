@@ -5,80 +5,108 @@ import (
 	"strings"
 )
 
-const (
-	ANSIReset      = "\x1b[0m"
-	ANSIBright     = "\x1b[1m"
-	ANSIDim        = "\x1b[2m"
-	ANSIUnderscore = "\x1b[4m"
-	ANSIBlink      = "\x1b[5m"
-	ANSIReverse    = "\x1b[7m"
-	ANSIHidden     = "\x1b[8m"
+type color struct {
+	aNSIReset      string
+	aNSIBright     string
+	aNSIDim        string
+	aNSIUnderscore string
+	aNSIBlink      string
+	aNSIReverse    string
+	aNSIHidden     string
 
-	ANSIFgBlack   = "\x1b[30m"
-	ANSIFgRed     = "\x1b[31m"
-	ANSIFgGreen   = "\x1b[32m"
-	ANSIFgYellow  = "\x1b[33m"
-	ANSIFgBlue    = "\x1b[34m"
-	ANSIFgMagenta = "\x1b[35m"
-	ANSIFgCyan    = "\x1b[36m"
-	ANSIFgWhite   = "\x1b[37m"
+	aNSIFgBlack   string
+	aNSIFgRed     string
+	aNSIFgGreen   string
+	aNSIFgYellow  string
+	aNSIFgBlue    string
+	aNSIFgMagenta string
+	aNSIFgCyan    string
+	aNSIFgWhite   string
 
-	ANSIBgBlack   = "\x1b[40m"
-	ANSIBgRed     = "\x1b[41m"
-	ANSIBgGreen   = "\x1b[42m"
-	ANSIBgYellow  = "\x1b[43m"
-	ANSIBgBlue    = "\x1b[44m"
-	ANSIBgMagenta = "\x1b[45m"
-	ANSIBgCyan    = "\x1b[46m"
-	ANSIBgWhite   = "\x1b[47m"
-)
+	aNSIBgBlack   string
+	aNSIBgRed     string
+	aNSIBgGreen   string
+	aNSIBgYellow  string
+	aNSIBgBlue    string
+	aNSIBgMagenta string
+	aNSIBgCyan    string
+	aNSIBgWhite   string
+}
+
+var Color = color{
+	aNSIReset:      "\x1b[0m",
+	aNSIBright:     "\x1b[1m",
+	aNSIDim:        "\x1b[2m",
+	aNSIUnderscore: "\x1b[4m",
+	aNSIBlink:      "\x1b[5m",
+	aNSIReverse:    "\x1b[7m",
+	aNSIHidden:     "\x1b[8m",
+
+	aNSIFgBlack:   "\x1b[30m",
+	aNSIFgRed:     "\x1b[31m",
+	aNSIFgGreen:   "\x1b[32m",
+	aNSIFgYellow:  "\x1b[33m",
+	aNSIFgBlue:    "\x1b[34m",
+	aNSIFgMagenta: "\x1b[35m",
+	aNSIFgCyan:    "\x1b[36m",
+	aNSIFgWhite:   "\x1b[37m",
+
+	aNSIBgBlack:   "\x1b[40m",
+	aNSIBgRed:     "\x1b[41m",
+	aNSIBgGreen:   "\x1b[42m",
+	aNSIBgYellow:  "\x1b[43m",
+	aNSIBgBlue:    "\x1b[44m",
+	aNSIBgMagenta: "\x1b[45m",
+	aNSIBgCyan:    "\x1b[46m",
+	aNSIBgWhite:   "\x1b[47m",
+}
 
 // color the string s with color 'color'
 // unless s is already colored
-func treat(s string, color string) string {
+func (c color) treat(s string, color string) string {
 	if len(s) > 2 && s[:2] == "\x1b[" {
 		return s
 	} else {
-		return color + s + ANSIReset
+		return color + s + c.aNSIReset
 	}
 }
 
-func treatAll(color string, args ...interface{}) string {
+func (c color) treatAll(color string, args ...interface{}) string {
 	var parts []string
 	for _, arg := range args {
-		parts = append(parts, treat(fmt.Sprintf("%v", arg), color))
+		parts = append(parts, c.treat(fmt.Sprintf("%v", arg), color))
 	}
 	return strings.Join(parts, "")
 }
 
-func Black(args ...interface{}) string {
-	return treatAll(ANSIFgBlack, args...)
+func (c color) Black(args ...interface{}) string {
+	return c.treatAll(c.aNSIFgBlack, args...)
 }
 
-func Red(args ...interface{}) string {
-	return treatAll(ANSIFgRed, args...)
+func (c color) Red(args ...interface{}) string {
+	return c.treatAll(c.aNSIFgRed, args...)
 }
 
-func Green(args ...interface{}) string {
-	return treatAll(ANSIFgGreen, args...)
+func (c color) Green(args ...interface{}) string {
+	return c.treatAll(c.aNSIFgGreen, args...)
 }
 
-func Yellow(args ...interface{}) string {
-	return treatAll(ANSIFgYellow, args...)
+func (c color) Yellow(args ...interface{}) string {
+	return c.treatAll(c.aNSIFgYellow, args...)
 }
 
-func Blue(args ...interface{}) string {
-	return treatAll(ANSIFgBlue, args...)
+func (c color) Blue(args ...interface{}) string {
+	return c.treatAll(c.aNSIFgBlue, args...)
 }
 
-func Magenta(args ...interface{}) string {
-	return treatAll(ANSIFgMagenta, args...)
+func (c color) Magenta(args ...interface{}) string {
+	return c.treatAll(c.aNSIFgMagenta, args...)
 }
 
-func Cyan(args ...interface{}) string {
-	return treatAll(ANSIFgCyan, args...)
+func (c color) Cyan(args ...interface{}) string {
+	return c.treatAll(c.aNSIFgCyan, args...)
 }
 
-func White(args ...interface{}) string {
-	return treatAll(ANSIFgWhite, args...)
+func (c color) White(args ...interface{}) string {
+	return c.treatAll(c.aNSIFgWhite, args...)
 }

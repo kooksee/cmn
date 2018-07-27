@@ -221,3 +221,7 @@ func GenRandom(start int, end int, count int) map[int]bool {
 func JsonGet(data []byte, path ...interface{}) jsoniter.Any {
 	return json.Get(data, path...)
 }
+
+func P(a ...interface{}) {
+	fmt.Println(a...)
+}

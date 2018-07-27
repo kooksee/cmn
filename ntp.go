@@ -24,7 +24,7 @@ type LocalNtpValidator struct {
 	NtpWarningCooldown time.Duration
 }
 
-func (v LocalNtpValidator) Check() error {
+func (v *LocalNtpValidator) Check() error {
 	return v.checkClockDrift()
 }
 
