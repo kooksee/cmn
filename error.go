@@ -17,6 +17,11 @@ func (myErr) MustNotErr(errs ... error) {
 	}
 }
 
+func (m myErr) GetResultWithoutErr(data interface{}, err error) interface{} {
+	m.MustNotErr(err)
+	return data
+}
+
 func (myErr) Err(data string, params ... interface{}) error {
 	return errors.New(fmt.Sprintf(data, params...))
 }

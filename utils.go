@@ -169,3 +169,11 @@ func BMap(m [][]byte, fn func(i int, k []byte) []byte) [][]byte {
 func P(a ...interface{}) {
 	fmt.Println(a...)
 }
+
+func Str(a interface{}) string {
+	return fmt.Sprintf("%s", a)
+}
+
+func StrP(a interface{}) {
+	fmt.Println(Str(a))
+}
