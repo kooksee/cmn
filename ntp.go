@@ -44,7 +44,7 @@ func (v *LocalNtpValidator) checkClockDrift() error {
 		return err
 	}
 	if drift < -v.DriftThreshold || drift > v.DriftThreshold {
-		return Err("本地时间超过误差")
+		return Err.Err("本地时间超过误差")
 	}
 
 	return nil
