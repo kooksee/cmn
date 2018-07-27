@@ -4,7 +4,6 @@ import (
 	"math"
 	"encoding/binary"
 	"fmt"
-	"os"
 	"bytes"
 	"reflect"
 	"unsafe"
@@ -56,30 +55,6 @@ func Int64ToByte(x int64) []byte {
 
 func ByteToInt64(x []byte) int64 {
 	return int64(binary.BigEndian.Uint64(x))
-}
-
-func StructSortMarshal(s interface{}) ([]byte, error) {
-	s1, err := json.Marshal(s)
-	if err != nil {
-		return nil, err
-	}
-
-	b := map[string]interface{}{}
-	if err := json.Unmarshal(s1, &b); err != nil {
-		return nil, err
-	}
-	b1, err := json.Marshal(b)
-	if err != nil {
-		return nil, err
-	}
-	return b1, nil
-}
-
-func IsFileExist(path string) bool {
-	if _, err := os.Stat(path); os.IsNotExist(err) {
-		return false
-	}
-	return true
 }
 
 func If(b bool, trueVal, falseVal interface{}) interface{} {

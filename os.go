@@ -172,3 +172,10 @@ func (myOS) Prompt(prompt string, defaultValue string) (string, error) {
 		return line, nil
 	}
 }
+
+func (myOS) IsFileExist(path string) bool {
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		return false
+	}
+	return true
+}

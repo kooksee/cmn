@@ -18,6 +18,24 @@ func (myJson) Marshal(v interface{}) ([]byte, error) {
 	return json.Marshal(v)
 }
 
+func (myJson) MarshalStructWithSorted(s interface{}) ([]byte, error) {
+	s1, err := json.Marshal(s)
+	if err != nil {
+		return nil, err
+	}
+
+	b := map[string]interface{}{}
+	if err := json.Unmarshal(s1, &b); err != nil {
+		return nil, err
+	}
+
+	b1, err := json.Marshal(b)
+	if err != nil {
+		return nil, err
+	}
+	return b1, nil
+}
+
 func (myJson) UnmarshalFromString(str string, v interface{}) error {
 	return json.UnmarshalFromString(str, v)
 }
