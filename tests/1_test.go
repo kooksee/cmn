@@ -3,6 +3,8 @@ package tests
 import (
 	"testing"
 	"github.com/kooksee/cmn"
+	"fmt"
+	"reflect"
 )
 
 type Js1 struct {
@@ -37,4 +39,9 @@ func TestName(t *testing.T) {
 			A: "ddd", C: "dd", D: "dd", M: "dd", I: "fff",
 		},
 	}))), `{"a":"ddd","c":"dd","d":"dd","i":"fff","m":"dd","q":{"a":"ddd","c":"dd","d":"dd","i":"fff","m":"dd"}}`)
+
+	f := cmn.Err.Wrap(cmn.Json.UnmarshalFromString, `{"a":"ddd","c":"dd","d":"dd","i":"fff","m":"dd","q":{"a":"ddd","c":"dd","d":"dd","i":"fff","m":"dd"}}`,&map[string]interface{}{})
+	fmt.Println(f())
+
+	reflect.TypeOf(nil)
 }
