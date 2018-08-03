@@ -3,6 +3,7 @@ package cmn
 import (
 	"errors"
 	"fmt"
+	"reflect"
 )
 
 var Err = myErr{}
@@ -33,4 +34,25 @@ func (myErr) ErrWithMsg(msg string, errs ... error) error {
 		}
 	}
 	return nil
+}
+
+func (myErr) Wrap(f interface{}, params ... interface{}) func() error {
+	return func() error {
+		t := reflect.TypeOf(f)
+		if t.Kind() != reflect.Func {
+			return errors.New("err -> Wrap: please input func")
+		}
+
+		var vs []reflect.Value
+		for _, p := range params {
+			vs = append(vs, reflect.ValueOf(p))
+		}
+
+		v := reflect.ValueOf(f)
+		out := v.Call(vs)
+		if len(out) != 1 {
+			return errors.New("err -> Wrap: the func output must one value")
+		}
+		return out[0].Interface().(error)
+	}
 }
