@@ -33,7 +33,7 @@ func (m myErr) ErrWithMsg(msg string, errs ... interface{}) error {
 		if err != nil {
 			switch err.(type) {
 			default:
-				return m.Err("myErr.ErrWithMsg error params type: %s", reflect.TypeOf(err).String())
+				panic(m.Err("myErr.ErrWithMsg error params type: %s", reflect.TypeOf(err).String()))
 			case error:
 				ee = err.(error)
 			case func() error:
@@ -50,15 +50,15 @@ func (m myErr) ErrWithMsg(msg string, errs ... interface{}) error {
 	return nil
 }
 
-func (m myErr) Wrap(f interface{}, params ... interface{}) func() error {
+func (m myErr) Curry(f interface{}, params ... interface{}) func() error {
 	return func() error {
-		return m.FilterErr(m.WrapM(f, params...)())
+		return m.FilterErr(m.CurryM(f, params...)())
 	}
 }
 
 func (myErr) FilterErr(params ... interface{}) error {
 	if len(params) < 1 {
-		return errors.New("err -> Wrap: the params must be more than one value")
+		panic("err -> Wrap: the params must be more than one value")
 	}
 
 	p := params[len(params)-1]
@@ -74,11 +74,11 @@ func (myErr) FilterErr(params ... interface{}) error {
 	if e, ok := value.Interface().(error); ok {
 		return e
 	} else {
-		return errors.New("err -> Wrap: the last param must be error type")
+		panic("err -> Wrap: the last param must be error type")
 	}
 }
 
-func (myErr) WrapM(f interface{}, params ... interface{}) func() (ds []reflect.Value, err error) {
+func (myErr) CurryM(f interface{}, params ... interface{}) func() (ds []reflect.Value, err error) {
 	return func() (ds []reflect.Value, err error) {
 		t := reflect.TypeOf(f)
 		if t.Kind() != reflect.Func {
@@ -93,7 +93,7 @@ func (myErr) WrapM(f interface{}, params ... interface{}) func() (ds []reflect.V
 		v := reflect.ValueOf(f)
 		out := v.Call(vs)
 		if len(out) < 1 {
-			return nil, errors.New("err -> Wrap: the func output must be more than one value")
+			panic("err -> Wrap: the func output must be more than one value")
 		}
 
 		value := out[len(out)-1]
@@ -104,7 +104,7 @@ func (myErr) WrapM(f interface{}, params ... interface{}) func() (ds []reflect.V
 		if e, ok := value.Interface().(error); ok {
 			return nil, e
 		} else {
-			return nil, errors.New("err -> Wrap: the func last output must be error type")
+			panic("err -> Wrap: the func last output must be error type")
 		}
 	}
 }
