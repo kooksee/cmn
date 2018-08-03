@@ -11,14 +11,14 @@ var Err = myErr{}
 type myErr struct{}
 
 // MustNotErr ,支持func()error,func()([]reflect.Value, error),error
-func (m myErr) MustNotErr(errs ... interface{}) {
-	if err := m.ErrWithMsg("myErr.MustNotErr", errs...); err != nil {
+func (m myErr) MustNotErr(msg string, errs ... interface{}) {
+	if err := m.ErrWithMsg(fmt.Sprintf("%s -> myErr.MustNotErr", msg), errs...); err != nil {
 		panic(err.Error())
 	}
 }
 
 func (m myErr) GetResultWithoutErr(data interface{}, err error) interface{} {
-	m.MustNotErr(err)
+	m.MustNotErr("myErr.GetResultWithoutErr", err)
 	return data
 }
 
