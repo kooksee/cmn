@@ -138,7 +138,7 @@ func (myOS) WriteFileAtomic(filePath string, newBytes []byte, mode os.FileMode) 
 func (myOS) Tempfile(prefix string) (*os.File, string) {
 	file, err := ioutil.TempFile("", prefix)
 	if err != nil {
-		Err.MustNotErr(err)
+		Err.MustNotErr("myOS.Tempfile error", err)
 	}
 	return file, file.Name()
 }

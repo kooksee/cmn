@@ -56,6 +56,13 @@ func (m myErr) Curry(f interface{}, params ... interface{}) func() error {
 	}
 }
 
+func (m myErr) If(b bool, trueVal, falseVal error) error {
+	if b {
+		return trueVal
+	}
+	return falseVal
+}
+
 func (myErr) FilterErr(params ... interface{}) error {
 	if len(params) < 1 {
 		panic("err -> Wrap: the params must be more than one value")
@@ -86,12 +93,18 @@ func (myErr) CurryM(f interface{}, params ... interface{}) func() (ds []reflect.
 		}
 
 		var vs []reflect.Value
-		for _, p := range params {
-			vs = append(vs, reflect.ValueOf(p))
+		for i, p := range params {
+			if p == nil {
+				vs = append(vs, reflect.New(t.In(i)).Elem())
+			} else {
+				vs = append(vs, reflect.ValueOf(p))
+			}
+
 		}
 
 		v := reflect.ValueOf(f)
 		out := v.Call(vs)
+
 		if len(out) < 1 {
 			panic("err -> Wrap: the func output must be more than one value")
 		}
